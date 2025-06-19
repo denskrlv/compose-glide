@@ -29,7 +29,7 @@ prompt_targets = {
     1: {"smile": 1, "glasses": 1, "gender": 1},
     2: {"smile": 1, "glasses": 0, "gender": 0},
     3: {"smile": 1, "glasses": 1, "gender": 0},
-    4: {"smile": 1, "glasses": 1, "gender": 0},
+    4: {"smile": 0, "glasses": 0, "gender": 0},
 }
 
 # Accuracy trackers
