@@ -5,11 +5,11 @@ from PIL import Image
 
 
 compositional_prompts = [
-    "No Smiling AND NOT Glasses AND NOT woman",
-    "Smiling AND NOT (No Glasses) AND NOT woman",
-    "NOT (No Smiling) AND No Glasses AND NOT man",
+    # "No Smiling AND NOT Glasses AND NOT woman",
+    # "Smiling AND NOT (No Glasses) AND NOT woman",
+    # "NOT (No Smiling) AND No Glasses AND NOT man",
     "NOT (No Smiling) AND NOT (No Glasses) AND man",
-    "Smiling AND NOT (No Glasses) AND NOT man"
+    # "Smiling AND NOT (No Glasses) AND NOT man"
 ]
 
 NUM_VARIANTS = 20
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     for i, prompt in enumerate(compositional_prompts):
         for j in range(NUM_VARIANTS):
 
-            print(f"Generating image for prompt {1} variant {j}")
+            print(f"Generating image for prompt {3} variant {j}")
 
             result, _ = compose_glide.generate(
                 prompt, 
@@ -49,6 +49,8 @@ if __name__ == "__main__":
             )
 
             image = tensor_to_image(result)
-            image_path = f"outputs/prompt_{i}_variant_{j}.png"
+            image_path = f"/Users/deniskrylov/Developer/University/compose-glide/outputs/prompt_{i}_variant_{j}.png"
             image.save(image_path)
             print(f"Saved: {image_path}!")
+            break
+        break
