@@ -30,6 +30,7 @@ dependencies = [
     "transformers>=4.11.0",
     "jupyter>=1.0.0",
     "scipy",
+    "kagglehub",
 ]
 
 [project.optional-dependencies]
