@@ -29,6 +29,7 @@ dependencies = [
     "matplotlib>=3.4.0",
     "transformers>=4.11.0",
     "jupyter>=1.0.0",
+    "scipy",
 ]
 
 [project.optional-dependencies]

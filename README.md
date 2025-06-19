@@ -1,9 +1,9 @@
-# ComposeGlide
+# 🎨 ComposeGlide
 ComposeGlide is an enhanced text-to-image generation framework built on OpenAI's GLIDE diffusion models. It provides improved compositional control, attention visualization capabilities, and specialized models for face generation.
 
 ![ComposeGlide Example](images/thumbnail.png)
 
-## Features
+## ✨ Features
 
 - 🖼️ High-quality text-to-image generation
 - 🧩 Enhanced compositional control over image elements
@@ -12,7 +12,7 @@ ComposeGlide is an enhanced text-to-image generation framework built on OpenAI's
 - 🔄 Fine-tuning support for custom datasets
 - 🚀 Simple API for integration into downstream applications
 
-## Installation
+## ⬇️ Installation
 
 Prerequisites:
 
@@ -32,7 +32,7 @@ pip install -e ./glide-text2im
 pip install -e .
 ```
 
-## Quick Start
+## 🚀 Quick Start
 
 ```python
 from compose_glide import ComposeGlide
@@ -51,9 +51,9 @@ image = model.generate(
 image.save("portrait.png")
 ```
 
-## Fine-tuning
+## 🦾 Fine-tuning
 
-ComposeGlide supports fine-tuning on custom datasets:
+ComposeGlide supports fine-tuning on custom datasets (implement your own data loader):
 
 ```python
 python -m src.scripts.fine_tune \
@@ -63,7 +63,7 @@ python -m src.scripts.fine_tune \
     --epochs 10
 ```
 
-## Project Structure
+## ⚛️ Project Structure
 
 ```markdown
 compose-glide/
@@ -73,7 +73,7 @@ compose-glide/
 └── notebooks/                 # Jupyter notebooks
 ```
 
-## References
+## 📋 References
 
 - **[GLIDE: Towards Photorealistic Image Generation and Editing with Text-Guided Diffusion Models](https://arxiv.org/abs/2112.10741)** - Nichol, A., Dhariwal, P., Ramesh, A., Shyam, P., Mishkin, P., McGrew, B., Sutskever, I., & Chen, M. (2022)
 

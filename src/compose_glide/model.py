@@ -36,7 +36,7 @@ class ComposeGlide:
 
         self.up_options = model_and_diffusion_defaults_upsampler()
         self.up_options['use_fp16'] = (self.device.type == 'cuda')
-        self.up_options['timestep_respacing'] = '100'
+        self.up_options['timestep_respacing'] = 'fast27'
         self.up_model, self.up_diffusion = self._load_model_internal(
             model_name='upsample',
             options=self.up_options
