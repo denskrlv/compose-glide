@@ -26,23 +26,24 @@ def predict(img, session):
 # Target labels
 prompt_targets = {
     0: {"smile": 0, "glasses": 0, "gender": 1},
-    1: {"smile": 1, "glasses": 1, "gender": 1},
-    2: {"smile": 1, "glasses": 0, "gender": 0},
-    3: {"smile": 1, "glasses": 1, "gender": 0},
-    4: {"smile": 0, "glasses": 0, "gender": 0},
+    1: {"smile": 1, "glasses": 0, "gender": 1},
+    2: {"smile": 1, "glasses": 1, "gender": 1},
+    3: {"smile": 0, "glasses": 0, "gender": 0},
+    4: {"smile": 1, "glasses": 0, "gender": 0},
+    5: {"smile": 1, "glasses": 1, "gender": 0},
 }
 
 # Accuracy trackers
-smile_correct = [0] * 5
-glasses_correct = [0] * 5
-gender_correct = [0] * 5
-total = [0] * 5
+smile_correct = [0] * 6
+glasses_correct = [0] * 6
+gender_correct = [0] * 6
+total = [0] * 6
 
 # Output directory
 output_dir = "/Users/deniskrylov/Developer/University/compose-glide/outputs"
 print(f"Looking for images in: {output_dir}")
 
-for i in range(0, 5):  # Range from 1 to 5 to match prompt_targets keys
+for i in range(0, 6):  # Range from 1 to 5 to match prompt_targets keys
     # Use glob to get all matching files
     pattern = os.path.join(output_dir, f"prompt_{i}_variant_*.png")
     files = glob(pattern)
