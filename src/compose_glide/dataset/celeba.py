@@ -156,14 +156,20 @@ class CelebA_Dataset(Dataset):
         # Add hat information
         if 'Wearing_Hat' in attrs and attrs['Wearing_Hat'] == 1:
             prompt += " wearing a hat"
+        elif 'Wearing_Hat' in attrs and attrs['Wearing_Hat'] == -1:
+            prompt += " not wearing a hat"
             
         # Add smile information
         if 'Smiling' in attrs and attrs['Smiling'] == 1:
             prompt += " smiling"
+        elif 'Smiling' in attrs and attrs['Smiling'] == -1:
+            prompt += " not smiling"
             
         # Add glasses information
         if 'Eyeglasses' in attrs and attrs['Eyeglasses'] == 1:
             prompt += " wearing glasses"
+        elif 'Eyeglasses' in attrs and attrs['Eyeglasses'] == -1:
+            prompt += " not wearing glasses"
             
         return prompt
 
