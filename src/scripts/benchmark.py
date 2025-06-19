@@ -1,54 +1,69 @@
-import torch
-
-from compose_glide import ComposeGlide
-from PIL import Image
-
-
-compositional_prompts = [
-    "No Smiling AND NOT Glasses AND NOT woman",
-    "Smiling AND NOT (No Glasses) AND NOT woman",
-    "NOT (No Smiling) AND No Glasses AND NOT man",
-    "NOT (No Smiling) AND NOT (No Glasses) AND man",
-    "Smiling AND NOT (No Glasses) AND NOT man"
-]
-
-NUM_VARIANTS = 20
+import onnxruntime as ort
+import cv2
+import numpy as np
+from glob import glob
+from tqdm import tqdm
 
 
-def tensor_to_image(tensor):
-    """Convert a PyTorch tensor to a PIL Image."""
-    # Scale from [-1, 1] to [0, 255]
-    scaled = ((tensor + 1) * 127.5).round().clamp(0, 255).to(torch.uint8).cpu()
-    
-    # Rearrange dimensions from CxHxW to HxWxC
-    if scaled.dim() == 3:  # Single image
-        img = scaled.permute(1, 2, 0).numpy()
-    else:  # Batch of images
-        img = scaled[0].permute(1, 2, 0).numpy()  # Take the first image
-        
-    return Image.fromarray(img)
+# Load ONNX models
+sess_smile = ort.InferenceSession("/content/resnet18_smiling_model.onnx")
+sess_glasses = ort.InferenceSession("/content/resnet18_eyeglasses_model.onnx")
+sess_gender = ort.InferenceSession("/content/resnet18_male_model.onnx")
 
+def preprocess(img_path):
+    img = cv2.imread(img_path)
+    img = cv2.resize(img, (224, 224))
+    img = img.astype(np.float32) / 255.0
+    img = img.transpose(2, 0, 1)
+    img = np.expand_dims(img, axis=0)
+    return img
 
-if __name__ == "__main__":
+def predict(img, session):
+    inputs = {session.get_inputs()[0].name: img}
+    out = session.run(None, inputs)[0]
+    return np.argmax(out)
 
-    compose_glide = ComposeGlide(model_name='glide_faces', verbose=True)
-    print(compose_glide)
+# Target labels
+prompt_targets = {
+    1: {"smile": 0, "glasses": 0, "gender": 1},
+    2: {"smile": 1, "glasses": 1, "gender": 1},
+    3: {"smile": 1, "glasses": 0, "gender": 0},
+    4: {"smile": 1, "glasses": 1, "gender": 0},
+    5: {"smile": 1, "glasses": 1, "gender": 0},
+}
 
-    for i, prompt in enumerate(compositional_prompts):
-        for j in range(NUM_VARIANTS):
+# Accuracy trackers
+smile_correct = [0] * 5
+glasses_correct = [0] * 5
+gender_correct = [0] * 5
+total = [0] * 5
 
-            print(f"Generating image for prompt {1} variant {j}")
+for i in range(1, 6):
+    files = glob(f"/Users/deniskrylov/Developer/University/compose-glide/outputs/prompt_{i}variant*.png")
+    target = prompt_targets[i]
 
-            result, _ = compose_glide.generate(
-                prompt, 
-                num_images=1, 
-                upsample=True, 
-                upsample_temp=0.995,
-                save_intermediate_steps=10,
-                return_attention_maps=True
-            )
+    for file in tqdm(files, desc=f"Prompt {i}"):
+        img = preprocess(file)
+        pred_smile = predict(img, sess_smile)
+        pred_glasses = predict(img, sess_glasses)
+        pred_gender = predict(img, sess_gender)
 
-            image = tensor_to_image(result)
-            image_path = f"outputs/prompt_{i}_variant_{j}.png"
-            image.save(image_path)
-            print(f"Saved: {image_path}!")
+        if pred_smile == target["smile"]:
+            smile_correct[i-1] += 1
+        if pred_glasses == target["glasses"]:
+            glasses_correct[i-1] += 1
+        if pred_gender == target["gender"]:
+            gender_correct[i-1] += 1
+
+        total[i-1] += 1
+
+# Display per-component accuracy
+print("\n📊 Component-wise Accuracy per Prompt:")
+for i in range(5):
+    smile_acc = 100 * smile_correct[i] / total[i]
+    glasses_acc = 100 * glasses_correct[i] / total[i]
+    gender_acc = 100 * gender_correct[i] / total[i]
+    print(f"Prompt {i+1}:")
+    print(f"  - Smile Accuracy   : {smile_acc:.2f}%")
+    print(f"  - Glasses Accuracy : {glasses_acc:.2f}%")
+    print(f"  - Gender Accuracy  : {gender_acc:.2f}%")
