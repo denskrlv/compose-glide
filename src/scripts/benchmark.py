@@ -40,7 +40,7 @@ gender_correct = [0] * 6
 total = [0] * 6
 
 # Output directory
-output_dir = "/Users/deniskrylov/Developer/University/compose-glide/outputs"
+output_dir = "/Users/deniskrylov/Developer/University/compose-glide/outputs/standard"
 print(f"Looking for images in: {output_dir}")
 
 for i in range(0, 6):  # Range from 1 to 5 to match prompt_targets keys
