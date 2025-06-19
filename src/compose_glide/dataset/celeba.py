@@ -147,29 +147,23 @@ class CelebA_Dataset(Dataset):
         """Create a text prompt based on image attributes"""
         if 'Male' in attrs:
             if attrs['Male'] == 1:
-                prompt = "a photo of a man"
+                prompt = "a man"
             else:
-                prompt = "a photo of a woman"
+                prompt = "a woman"
         else:
-            prompt = "a photo of a person"
-        
-        # Add hat information
-        if 'Wearing_Hat' in attrs and attrs['Wearing_Hat'] == 1:
-            prompt += " wearing a hat"
-        elif 'Wearing_Hat' in attrs and attrs['Wearing_Hat'] == -1:
-            prompt += " not wearing a hat"
-            
-        # Add smile information
-        if 'Smiling' in attrs and attrs['Smiling'] == 1:
-            prompt += " smiling"
-        elif 'Smiling' in attrs and attrs['Smiling'] == -1:
-            prompt += " not smiling"
-            
-        # Add glasses information
-        if 'Eyeglasses' in attrs and attrs['Eyeglasses'] == 1:
-            prompt += " wearing glasses"
-        elif 'Eyeglasses' in attrs and attrs['Eyeglasses'] == -1:
-            prompt += " not wearing glasses"
+            prompt = "a person"
+
+        if 'Smiling' in attrs:
+            if attrs['Smiling'] == 1:
+                prompt += " smiling"
+            else:
+                prompt += " no smiling"
+
+        if 'Eyeglasses' in attrs:
+            if attrs['Eyeglasses'] == 1:
+                prompt += " glasses"
+            else:
+                prompt += " no glasses"
             
         return prompt
 
