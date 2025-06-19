@@ -5,11 +5,11 @@ from PIL import Image
 
 
 compositional_prompts = [
-    # "No Smiling AND NOT Glasses AND NOT woman",
-    # "Smiling AND NOT (No Glasses) AND NOT woman",
-    # "NOT (No Smiling) AND No Glasses AND NOT man",
+    "No Smiling AND NOT Glasses AND NOT woman",
+    "Smiling AND NOT (No Glasses) AND NOT woman",
+    "NOT (No Smiling) AND No Glasses AND NOT man",
     "NOT (No Smiling) AND NOT (No Glasses) AND man",
-    # "Smiling AND NOT (No Glasses) AND NOT man"
+    "Smiling AND NOT (No Glasses) AND NOT man"
 ]
 
 NUM_VARIANTS = 20
