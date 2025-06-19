@@ -40,47 +40,91 @@ gender_correct = [0] * 6
 total = [0] * 6
 
 # Output directory
-output_dir = "/Users/deniskrylov/Developer/University/compose-glide/outputs/standard"
+output_dir = "/Users/deniskrylov/Developer/University/compose-glide/outputs_old"
 print(f"Looking for images in: {output_dir}")
 
-for i in range(0, 6):  # Range from 1 to 5 to match prompt_targets keys
-    # Use glob to get all matching files
-    pattern = os.path.join(output_dir, f"prompt_{i}_variant_*.png")
-    files = glob(pattern)
+# for i in range(0, 6):  # Range from 1 to 5 to match prompt_targets keys
+#     # Use glob to get all matching files
+#     pattern = os.path.join(output_dir, f"prompt_{i}_variant_*.png")
+#     files = glob(pattern)
     
-    print(f"Found {len(files)} files for prompt {i}: {pattern}")
+#     print(f"Found {len(files)} files for prompt {i}: {pattern}")
     
-    target = prompt_targets[i]
-    idx = i-1  # Index for our tracking arrays (0-4)
+#     target = prompt_targets[i]
+#     idx = i-1  # Index for our tracking arrays (0-4)
 
-    for file in tqdm(files, desc=f"Prompt {i}"):
-        try:
-            img = preprocess(file)
-            pred_smile = predict(img, sess_smile)
-            pred_glasses = predict(img, sess_glasses)
-            pred_gender = predict(img, sess_gender)
+#     for file in tqdm(files, desc=f"Prompt {i}"):
+#         try:
+#             img = preprocess(file)
+#             pred_smile = predict(img, sess_smile)
+#             pred_glasses = predict(img, sess_glasses)
+#             pred_gender = predict(img, sess_gender)
 
-            if pred_smile == target["smile"]:
-                smile_correct[idx] += 1
-            if pred_glasses == target["glasses"]:
-                glasses_correct[idx] += 1
-            if pred_gender == target["gender"]:
-                gender_correct[idx] += 1
+#             if pred_smile == target["smile"]:
+#                 smile_correct[idx] += 1
+#             if pred_glasses == target["glasses"]:
+#                 glasses_correct[idx] += 1
+#             if pred_gender == target["gender"]:
+#                 gender_correct[idx] += 1
 
-            total[idx] += 1
-        except Exception as e:
-            print(f"Error processing {file}: {e}")
+#             total[idx] += 1
+#         except Exception as e:
+#             print(f"Error processing {file}: {e}")
 
-# Display per-component accuracy
-print("\n📊 Component-wise Accuracy per Prompt:")
-for i in range(5):
-    if total[i] > 0:
-        smile_acc = 100 * smile_correct[i] / total[i]
-        glasses_acc = 100 * glasses_correct[i] / total[i]
-        gender_acc = 100 * gender_correct[i] / total[i]
-        print(f"Prompt {i+1}:")
-        print(f"  - Smile Accuracy   : {smile_acc:.2f}%")
-        print(f"  - Glasses Accuracy : {glasses_acc:.2f}%")
-        print(f"  - Gender Accuracy  : {gender_acc:.2f}%")
-    else:
-        print(f"Prompt {i+1}: No valid images processed")
+# # Display per-component accuracy
+# print("\n📊 Component-wise Accuracy per Prompt:")
+# for i in range(5):
+#     if total[i] > 0:
+#         smile_acc = 100 * smile_correct[i] / total[i]
+#         glasses_acc = 100 * glasses_correct[i] / total[i]
+#         gender_acc = 100 * gender_correct[i] / total[i]
+#         print(f"Prompt {i+1}:")
+#         print(f"  - Smile Accuracy   : {smile_acc:.2f}%")
+#         print(f"  - Glasses Accuracy : {glasses_acc:.2f}%")
+#         print(f"  - Gender Accuracy  : {gender_acc:.2f}%")
+#     else:
+#         print(f"Prompt {i+1}: No valid images processed")
+
+
+# Add these imports at the top
+from pytorch_fid import fid_score
+import tempfile
+import shutil
+import torch
+from multiprocessing import freeze_support
+
+# After your accuracy calculation code, add FID calculation:
+
+# Calculate FID score
+def main():
+    print("\n📊 FID Scores (Image Quality):")
+    reference_dir = "/Users/deniskrylov/.cache/kagglehub/datasets/kushsheth/face-vae/versions/1/img_align_celeba/img_align_celeba"  # Directory with real face images
+
+    for i in range(6):
+        pattern = os.path.join(output_dir, f"prompt_{i}_variant_*.png")
+        files = glob(pattern)
+        
+        if len(files) > 0:
+            # Create temporary directory for the generated images
+            with tempfile.TemporaryDirectory() as tmp_dir:
+                # Copy generated images to temp directory
+                for idx, file in enumerate(files):
+                    shutil.copy2(file, os.path.join(tmp_dir, f"img_{idx}.png"))
+                
+                # Calculate FID
+                try:
+                    fid = fid_score.calculate_fid_given_paths(
+                        [reference_dir, tmp_dir],
+                        batch_size=50,
+                        device=torch.device('mps'),
+                        dims=2048
+                    )
+                    print(f"Prompt {i}: FID = {fid:.2f}")
+                except Exception as e:
+                    print(f"Error calculating FID for prompt {i}: {e}")
+        else:
+            print(f"Prompt {i}: No images to calculate FID")
+
+if __name__ == "__main__":
+    freeze_support()  # Add this line to support multiprocessing
+    main()
