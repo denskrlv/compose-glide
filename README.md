@@ -39,7 +39,7 @@ pip install -e .
 
 ### Models
 
-Fine-tuned model and binary classifiers can be downloaded using [this link](https://drive.google.com/drive/folders/1r0Zre539MPNyhWIQy5F9UXaNIOX06VXE?usp=sharing). After downloading, put both files into models folder.
+Fine-tuned model and binary classifiers can be downloaded using [this link](https://drive.google.com/drive/folders/1r0Zre539MPNyhWIQy5F9UXaNIOX06VXE?usp=sharing). After downloading, put both files into `models` folder.
 
 ## 🚀 Quick Start
 
