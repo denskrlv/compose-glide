@@ -27,8 +27,10 @@ ComposeGlide is an enhanced text-to-image generation framework built on OpenAI's
 git clone --recursive https://github.com/denskrlv/compose-glide.git
 cd compose-glide
 
-# First install the local dependency
+# If you want to use MPS, install my changed version of GLIDE
 pip install -e ./glide-text2im
+# If you want to use CUDA, just run
+git clone https://github.com/openai/glide-text2im.git
 
 # Then install the main package
 pip install -e .
