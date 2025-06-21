@@ -1,7 +1,8 @@
-# 🎨 ComposeGlide
+# 🎨 Replication of "Compositional Visual Generation with Composable Diffusion Models" with Compose GLIDE
+
 ComposeGlide is an enhanced text-to-image generation framework built on OpenAI's GLIDE diffusion models. It provides improved compositional control, attention visualization capabilities, and specialized models for face generation.
 
-![ComposeGlide Example](images/thumbnail.png)
+![ComposeGlide Example](./images/thumbnail.png)
 
 ## ✨ Features
 
@@ -14,11 +15,12 @@ ComposeGlide is an enhanced text-to-image generation framework built on OpenAI's
 
 ## ⬇️ Installation
 
-Prerequisites:
+### Prerequisites:
 
 - Python 3.7+
 - PyTorch 1.9+
 - CUDA-compatible GPU (recommended)
+- 32GB RAM (recommended)
 
 ```python
 # Installation steps
@@ -32,19 +34,29 @@ pip install -e ./glide-text2im
 pip install -e .
 ```
 
+### Models
+
+Fine-tuned model and binary classifiers can be downloaded using [this link](https://drive.google.com/drive/folders/1r0Zre539MPNyhWIQy5F9UXaNIOX06VXE?usp=sharing). After downloading, put both files into models folder.
+
 ## 🚀 Quick Start
 
 ```python
 from compose_glide import ComposeGlide
 
 # Initialize the model
-model = ComposeGlide.from_pretrained("models/glide_faces.pt")
+compose_glide = ComposeGlide(model_name='glide_faces', verbose=True)
+print(compose_glide)
+
+PROMPT = "..."
 
 # Generate an image from text
-image = model.generate(
-    prompt="A portrait of a woman with blue eyes and blonde hair", 
-    guidance_scale=3.0,
-    steps=100
+result, attention_data = compose_glide.generate(
+    PROMPT, 
+    num_images=NUM_IMAGES, 
+    upsample=UPSAMPLE, 
+    upsample_temp=0.995,
+    save_intermediate_steps=10,
+    return_attention_maps=True
 )
 
 # Save the image
@@ -53,7 +65,7 @@ image.save("portrait.png")
 
 ## 🦾 Fine-tuning
 
-ComposeGlide supports fine-tuning on custom datasets (implement your own data loader):
+ComposeGlide supports custom fine-tuning on CelebA (using the provided data loader):
 
 ```python
 python -m src.scripts.fine_tune \
@@ -75,6 +87,10 @@ compose-glide/
 
 ## 📋 References
 
-- **[GLIDE: Towards Photorealistic Image Generation and Editing with Text-Guided Diffusion Models](https://arxiv.org/abs/2112.10741)** - Nichol, A., Dhariwal, P., Ramesh, A., Shyam, P., Mishkin, P., McGrew, B., Sutskever, I., & Chen, M. (2022)
+Original authors:
 
-- **[Compositional Visual Generation with Composable Diffusion Models](https://arxiv.org/abs/2206.01714)** - Liu, N., Li, S., Du, Y., Torralba, A., & Tenenbaum, J.
+**[GLIDE: Towards Photorealistic Image Generation and Editing with Text-Guided Diffusion Models](https://arxiv.org/abs/2112.10741)** - Nichol, A., Dhariwal, P., Ramesh, A., Shyam, P., Mishkin, P., McGrew, B., Sutskever, I., & Chen, M. (2022)
+
+Additional papers:
+
+**[Compositional Visual Generation with Composable Diffusion Models](https://arxiv.org/abs/2206.01714)** - Liu, N., Li, S., Du, Y., Torralba, A., & Tenenbaum, J.

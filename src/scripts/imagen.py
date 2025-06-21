@@ -15,11 +15,11 @@ compositional_prompts = [
 
 standard_prompts = [
     "a man",
-    "a man smiling",
-    "a man smiling with glasses",
     "a woman",
-    "a woman smiling",
-    "a woman smiling with glasses",
+    "smiling",
+    "not smiling",
+    "wearing glasses",
+    "not wearing glasses"
 ]
 
 NUM_VARIANTS = 20
@@ -44,24 +44,24 @@ if __name__ == "__main__":
     compose_glide = ComposeGlide(model_name='glide_faces', verbose=True)
     print(compose_glide)
 
-    for i, prompt in enumerate(compositional_prompts):
-        for j in range(NUM_VARIANTS):
+    # for i, prompt in enumerate(compositional_prompts):
+    #     for j in range(NUM_VARIANTS):
 
-            print(f"Generating image for prompt {i} variant {j}")
+    #         print(f"Generating image for prompt {i} variant {j}")
 
-            result, _ = compose_glide.generate(
-                prompt, 
-                num_images=1, 
-                upsample=True, 
-                upsample_temp=0.995,
-                save_intermediate_steps=10,
-                return_attention_maps=True
-            )
+    #         result, _ = compose_glide.generate(
+    #             prompt, 
+    #             num_images=1, 
+    #             upsample=True, 
+    #             upsample_temp=0.995,
+    #             save_intermediate_steps=10,
+    #             return_attention_maps=True
+    #         )
 
-            image = tensor_to_image(result)
-            image_path = f"/Users/deniskrylov/Developer/University/compose-glide/outputs/compositional/prompt_{i}_variant_{j}.png"
-            image.save(image_path)
-            print(f"Saved: {image_path}!")
+    #         image = tensor_to_image(result)
+    #         image_path = f"/Users/deniskrylov/Developer/University/compose-glide/outputs/compositional/prompt_{i}_variant_{j}.png"
+    #         image.save(image_path)
+    #         print(f"Saved: {image_path}!")
     
     for i, prompt in enumerate(standard_prompts):
         for j in range(NUM_VARIANTS):
@@ -78,6 +78,6 @@ if __name__ == "__main__":
             )
 
             image = tensor_to_image(result)
-            image_path = f"/Users/deniskrylov/Developer/University/compose-glide/outputs/standard/prompt_{i}_variant_{j}.png"
+            image_path = f"/Users/deniskrylov/Developer/University/compose-glide/outputs/standard/1/prompt_{i}_variant_{j}.png"
             image.save(image_path)
             print(f"Saved: {image_path}!")
