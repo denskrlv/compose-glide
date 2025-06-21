@@ -1,6 +1,6 @@
 # 🎨 Replication of "Compositional Visual Generation with Composable Diffusion Models" with Compose GLIDE
 
-ComposeGlide is an enhanced text-to-image generation framework built on OpenAI's GLIDE diffusion models. It provides improved compositional control, attention visualization capabilities, and specialized models for face generation.
+ComposeGlide is an enhanced text-to-image generation framework built on OpenAI's GLIDE diffusion models by Liu, N. et al. My implementation, based on the implementation of Liu, N. et al., provides improved compositional control, attention visualization capabilities, and specialized models for face generation.
 
 ![ComposeGlide Example](./images/thumbnail.png)
 
