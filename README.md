@@ -29,8 +29,9 @@ cd compose-glide
 
 # If you want to use MPS, install my changed version of GLIDE
 pip install -e ./glide-text2im
-# If you want to use CUDA, just run
+# If you want to use CUDA, delete existing ./glide-text2im and clone new one from GitHub:
 git clone https://github.com/openai/glide-text2im.git
+pip install -e ./glide-text2im
 
 # Then install the main package
 pip install -e .
