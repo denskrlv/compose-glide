@@ -90,10 +90,6 @@ compose-glide/
 
 ## 📋 References
 
-Original authors:
+**[Compositional Visual Generation with Composable Diffusion Models](https://arxiv.org/abs/2206.01714)** - Liu, N., Li, S., Du, Y., Torralba, A., & Tenenbaum, J.
 
 **[GLIDE: Towards Photorealistic Image Generation and Editing with Text-Guided Diffusion Models](https://arxiv.org/abs/2112.10741)** - Nichol, A., Dhariwal, P., Ramesh, A., Shyam, P., Mishkin, P., McGrew, B., Sutskever, I., & Chen, M. (2022)
-
-Additional papers:
-
-**[Compositional Visual Generation with Composable Diffusion Models](https://arxiv.org/abs/2206.01714)** - Liu, N., Li, S., Du, Y., Torralba, A., & Tenenbaum, J.
